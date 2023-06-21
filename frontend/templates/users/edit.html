@@ -1,0 +1,25 @@
+{% extends "users/users_base.html" %}
+
+{% load bootstrap5 %}
+
+{% block title %} Update Profile {% endblock %}
+
+{% block content %}
+<div class="row align-items-center" style="height: 100vh;">
+  <div class="mx-auto col-lg-4">
+    <h2 class="text-center mb-5">Edit Profile</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      {% buttons submit="Update"%}{% endbuttons %}
+    </form>
+
+    <div class="alert alert-danger" role="alert">
+  You can delete your profile by clicking on the link
+      <a href="{% url 'users:delete' user.id %}" class="alert-link">delete profile</a>
+</div>
+
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "../users/users_base.html" %}
+
+{% block title %} My Posts {% endblock %}
+{% load cloudinary %}
+{% block content %}
+<div class="container py-5">
+  <h1>My Posts</h1>
+  {% for post in posts %}
+  <div class="row py-2">
+
+
+    <!-- Post Image -->
+    <div class="col-md-3 col-sm-12">
+      <a href="{% url 'posts:post' user.id post.id %}">
+      {% cloudinary post.images.first.image width=200 height=200 crop="fill" gravity="face" %}</a>
+    </div>
+
+    <!-- Post Content -->
+    <div class="col-md-9 col-sm-12">
+      <p>
+        {{ post.content }}
+      </p>
+
+      <!-- Post Tags -->
+      <p>
+        <small class="text-muted">
+          {% for tag in post.tags.all %}
+          #{{tag}}
+          {% endfor %}
+        </small>
+      </p>
+
+      <!-- Post Date -->
+      <p>
+        <small class="text-muted">
+          {{ post.created_at }}
+        </small>
+      </p>
+
+      <!-- Edit/Delete Post -->
+
+        <a href="{% url 'posts:update' user.id post.id %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'posts:delete' user.id post.id %}" class="btn btn-primary">Delete</a>
+
+    </div>
+
+  </div>
+  <hr class="border-2 border-top ">
+  <!-- If no posts -->
+  {% empty %}
+  <p>No post yet</p>
+  {% endfor %}
+</div>
+{% endblock %}
+

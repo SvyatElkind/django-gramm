@@ -1,0 +1,31 @@
+{% extends "users/users_base.html" %}
+
+{% block title %} User Page {% endblock %}
+{% load cloudinary %}
+{% block content %}
+  <div class="container-fluid pt-5" style="background-color: #4b82c3">
+
+    <div class="text-center">
+      {% cloudinary target_user.avatar width=200 height=150 crop="thumb" gravity="face" %}
+      <h3 class="py-2 text-white"> {{ target_user.get_full_name }} </h3>
+      <h6 class="py-2 text-white">
+        <span id="followers">{{ followers }} Followers</span>
+        <span id="following">{{ following }} Following</span>
+
+        <a id="follow-user" class="btn btn-outline-light" data-href="{% url 'users:follow' target_user.id %}"
+           role="button" href="#">
+          {% if follows %} unfollow {% else %} follow {% endif %}
+        </a>
+      </h6>
+    </div>
+  </div>
+
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-6 col-sm-12">
+        <h1>About Me</h1>
+        <p> {{ target_user.bio }} </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

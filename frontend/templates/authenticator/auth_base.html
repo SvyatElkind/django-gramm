@@ -1,0 +1,21 @@
+<html lang="en">
+
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% bootstrap_messages %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'main.css' %}">
+</head>
+<body>
+<div class="container">
+  <div class="row align-items-center" style="height: 100%;">
+    <div class="mx-auto col-lg-4">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+</div>
+<script src="{% static 'bundle.js' %}"></script>
+</body>
+</html>

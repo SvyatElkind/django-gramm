@@ -1,0 +1,60 @@
+{% extends "../users/users_base.html" %}
+
+{% block title %} Single Post {% endblock %}
+{% load cloudinary %}
+{% block content %}
+<div class="container py-5">
+  {{ post.created_at}}
+  <!-- Post Content -->
+  <div class="col-md-9 col-sm-12">
+    <p>
+      {{ post.content }}
+    </p>
+
+    <!-- Post Tags -->
+    <p>
+      <small class="text-muted">
+        {% for tag in post.tags.all %}
+        #{{tag}}
+        {% endfor %}
+      </small>
+    </p>
+
+    <!-- Likes-->
+      <p>
+        <small class="text-muted">
+         {{ post.likes.count }} likes
+        </small>
+      </p>
+
+    <!-- Post Date -->
+      <p>
+        <small class="text-muted">
+          {{ post.created_at }}
+        </small>
+      </p>
+
+
+    <!-- Post Images -->
+    <div class="col-md-3 col-sm-12">
+      {% for image in post.images.all %}
+
+      <div class="img-fluid rounded-start pb-2">
+      {% cloudinary image.image background="grey" width=300 height=200 crop="pad" %}
+      </div>
+
+      {% endfor %}
+    </div>
+
+    <!-- Edit/Delete Post -->
+    <div class="d-grid gap-2 d-md-block">
+      <a href="{% url 'posts:update' user.id post.id %}" class="btn btn-primary">Edit</a>
+      <a href="{% url 'posts:delete' user.id post.id %}" class="btn btn-primary">Delete</a>
+    </div>
+  </div>
+
+
+</div>
+
+{% endblock %}
+

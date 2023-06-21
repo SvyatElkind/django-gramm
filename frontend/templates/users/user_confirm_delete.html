@@ -1,0 +1,19 @@
+{% extends "users/users_base.html" %}
+
+{% block content %}
+
+<div class="row align-items-center" style="height: 100vh;">
+  <div class="mx-auto col-lg-3">
+    <h2 class="text-center">Delete User</h2>
+    <form method="post">
+      {% csrf_token %}
+      <p class="text-center">Are you sure that you want to delete user?</p>
+      <p class="form-buttons text-center">
+        <input type="submit" class="btn btn-primary" value="Delete">
+        <a href="{% url 'users:update' user.id %}" class="btn btn-outline">Cancel</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+{%endblock%}

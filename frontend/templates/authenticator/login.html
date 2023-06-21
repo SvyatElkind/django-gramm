@@ -1,0 +1,20 @@
+{% extends "authenticator/auth_base.html" %}
+
+{% load bootstrap5 %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+  <h2 class="text-center mb-5">Welcome to DjangoGramm</h2>
+  <div class="d-grid py-3">
+    <a class="btn btn-dark" href="{% url 'social:begin' 'github' %}">
+      <i class="bi bi-github"></i> Login via GitHub
+    </a>
+  </div>
+  <form method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons submit="Login" %}{% endbuttons %}
+  </form>
+  <p>Don't have an account? <a href="/register">Sign Up</a></p>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "../users/users_base.html" %}
+
+{% block title %} Single Post {% endblock %}
+{% block content %}
+  {% load cloudinary %}
+  {% load static %}
+  <div class="container py-5">
+    {{ post.created_at }}
+    <!-- Post Content -->
+    <div class="col-md-9 col-sm-12">
+      <p>
+        {{ post.content }}
+      </p>
+
+      <!-- Post Tags -->
+      <p>
+        <small class="text-muted">
+          {% for tag in post.tags.all %}
+            #{{ tag }}
+          {% endfor %}
+        </small>
+      </p>
+
+      <!-- Post Author-->
+      <p>
+        <a href="{% url 'users:userpage' post.user.id %}">
+          <small class="text-muted">
+            by {{ post.user.get_full_name }}
+          </small>
+        </a>
+      </p>
+
+      <!-- Likes-->
+      <p>
+        <small class="text-muted">
+          <span id="post-likes-count">{{ post_likes_count }}</span>
+          <a id="like-post" href="#" data-href="{% url 'posts:like' post.id %}">
+            <i id="like-icon" class="bi bi-heart{% if post_liked %}-fill{% endif %}"></i>
+          </a>
+        </small>
+      </p>
+
+
+      <!-- Post Images -->
+      <div class="col-md-3 col-sm-12">
+        {% for image in post.images.all %}
+
+          {% cloudinary image.image background="grey" width=300 height=200 crop="pad" %}
+
+          <p>
+            <small class="text-muted">
+              <span id="image-likes-count-{{ image.id }}">{{ image.likes.count }}</span>
+              <a class="like-image" href="#" data-image-id="{{ image.id }}"
+                 data-href="{% url 'posts:image_like' post.id %}?image_id={{ image.id }}">
+                <i id="image-like-icon-{{ image.id }}"
+                   class="bi bi-heart{% if user in image.likes.all %}-fill{% endif %}"></i>
+              </a>
+            </small>
+          </p>
+        {% endfor %}
+      </div>
+
+    </div>
+
+
+  </div>
+
+{% endblock %}
+

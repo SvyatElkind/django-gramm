@@ -1,0 +1,84 @@
+{% extends "../users/users_base.html" %}
+
+{% block title %} Feed {% endblock %}
+{% load cloudinary %}
+{% block content %}
+  <div class="container py-5">
+    <h1>Latest Posts</h1>
+    {% for post in posts %}
+      <div class="row py-2">
+
+
+        <!-- Post Image -->
+        <div class="col-md-3 col-sm-12">
+          <a href="{% url 'posts:feed_post' post.id %}">
+            {% cloudinary post.images.first.image width=200 height=200 crop="fill" gravity="face" %}</a>
+        </div>
+
+        <!-- Post Content -->
+        <div class="col-md-9 col-sm-12">
+          <p>
+            {{ post.content }}
+          </p>
+
+          <!-- Post Tags -->
+          <p>
+            <small class="text-muted">
+              {% for tag in post.tags.all %}
+                #{{ tag }}
+              {% endfor %}
+            </small>
+          </p>
+
+          <!-- Post Author-->
+          <p>
+            <a href="{% url 'users:userpage' post.user.id %}">
+              <small class="text-muted">
+                by {{ post.user.get_full_name }}
+              </small>
+            </a>
+          </p>
+
+          <!-- Likes-->
+          <p>
+            <small class="text-muted">
+              {{ post.likes.count }} likes
+            </small>
+          </p>
+
+          <!-- Post Date -->
+          <p>
+            <small class="text-muted">
+              {{ post.created_at }}
+            </small>
+          </p>
+        </div>
+
+      </div>
+      <hr class="border-2 border-top ">
+      <!-- If no posts -->
+    {% empty %}
+      <p>No post yet</p>
+    {% endfor %}
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+      <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+    </span>
+    </div>
+
+  </div>
+{% endblock %}
+

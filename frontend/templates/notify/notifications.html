@@ -1,0 +1,65 @@
+{% extends "../users/users_base.html" %}
+{% block content %}
+
+  <div class="container py-5">
+
+    <h1>Notifications</h1>
+    {% if notifications %}
+
+      <!-- Notification table -->
+      <table class="table mt-5" id="notification-table">
+        <tbody>
+        {% for notification in notifications %}
+          <tr id="notification-{{ notification.id }}">
+            <td>
+              <!-- Notification actor -->
+              <a class="btn btn-light" href="{% url 'users:userpage' notification.actor.id %}" role="button">
+                {{ notification.actor.name }} {{ notification.actor.surname }}
+              </a>
+
+              <!-- Notification target -->
+              {% if notification.target %}
+
+                <a class="btn btn-outline-primary"
+                   href="
+                        {% if notification.target_content_type.model == "post" %}
+                           {% url 'posts:feed_post' notification.target.id %}
+
+                        {% elif notification.target_content_type.model == "image" %}
+                          {% url 'posts:feed_post' notification.target.post.id %}
+
+                        {% endif %}
+                      "
+                   role="button">{{ notification.verb }}</a>
+
+                <!-- If no notification target - display notification phrase -->
+              {% else %}
+                {{ notification.verb }}
+              {% endif %}
+            </td>
+            <!-- Mark as read button -->
+            <td class="text-end">
+              {% if notification.unread %}
+                <a class="btn btn-primary notification-read" href="#"
+                   data-href="{% url 'notify:read' notification.id %}" role="button">
+                  Mark as read
+                </a>
+              {% endif %}
+            </td>
+            <td class="text-start">
+              <a class="btn btn-danger notification-delete" href="#" data-notification-id="{{ notification.id }}"
+                 data-href="{% url 'notify:delete' notification.id %}" role="button">
+                Delete
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+
+    {% else %}
+      <p>No notifications</p>
+    {% endif %}
+
+  </div>
+{% endblock %}

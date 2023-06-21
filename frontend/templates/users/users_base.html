@@ -1,0 +1,70 @@
+<html lang="en">
+
+
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  {% load bootstrap5 %}
+  {% load notify_tags %}
+  {% bootstrap_messages %}
+  {% load static %}
+  <!-- Option 1: Include in HTML -->
+  <link rel="stylesheet" href="{% static 'main.css' %}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToogle"
+            aria-controls="navbarToogle" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="navbarToogle">
+      <a class="navbar-brand">DjangoGramm</a>
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'posts:feed' %}">Feed</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'posts:create' user.id %}">Create Post</a>
+        </li>
+      </ul>
+
+    </div>
+
+    <div>
+    <a class="btn btn-light" href="{% url 'notify:all' %}" role="button">
+        Notifications
+        {% unread_notification user as unread_count %}
+        {% if unread_count %}
+          <span class="badge rounded-pill bg-danger" id="notification-count">
+              {{ unread_count }}
+          </span>
+        {% endif %}
+    </a>
+    </div>
+    <div class="dropdown">
+      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+         aria-expanded="false">
+        <i class="bi bi-person-circle"></i>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{% url 'users:profile' user.id %}">My Profile</a></li>
+        <li><a class="dropdown-item" href="{% url 'users:update' user.id %}">Edit Profile</a></li>
+        <li><a class="dropdown-item" href="{% url 'posts:posts' user.id %}">My Posts</a></li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="{% url 'authenticator:logout' %}">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  </div>
+</nav>
+{% block content %}
+{% endblock %}
+
+<script src="{% static 'bundle.js' %}"></script>
+</body>
+</html>

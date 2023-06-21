@@ -1,0 +1,24 @@
+{% extends "users/users_base.html" %}
+
+{% block title %} Profile {% endblock %}
+{% load cloudinary %}
+{% block content %}
+<div class="container-fluid pt-5" style="background-color: #4b82c3">
+
+  <div class="text-center">
+    {% cloudinary user.avatar width=200 height=150 crop="thumb" gravity="face" %}
+    <h3 class="py-2 text-white"> {{ user.get_full_name }} </h3>
+    <h6 class="py-2 text-white"> {{ followers }} Followers {{ following }} Following</h6>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row">
+    <div class="col-lg-6 col-sm-12">
+      <h1>About Me</h1>
+  <p> {{ user.bio }} </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
